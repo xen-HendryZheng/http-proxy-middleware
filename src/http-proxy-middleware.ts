@@ -69,7 +69,7 @@ export class HttpProxyMiddleware {
      */
     const server: https.Server = ((req.socket ?? req.connection) as any)?.server;
 
-    if (server && !this.serverOnCloseSubscribed) {
+    if (server && !this.serverOnCloseSubscribed && this.proxyOptions.ws === true) {
       server.on('close', () => {
         this.logger.info('[HPM] server close signal received: closing proxy server');
         this.proxy.close();
